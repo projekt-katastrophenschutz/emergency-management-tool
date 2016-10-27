@@ -1,0 +1,108 @@
+﻿<mahAppsMetro:MetroWindow x:Class="ProjektKatastrophenschutz.Shell"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjektKatastrophenschutz"
+        xmlns:mahAppsMetro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:chromeTabs="clr-namespace:ChromeTabs;assembly=ChromeTabs"
+        xmlns:controls="clr-namespace:ProjektKatastrophenschutz.Controls"
+        xmlns:elements="clr-namespace:ProjektKatastrophenschutz.Elements"
+        xmlns:views="clr-namespace:ProjektKatastrophenschutz.Views"
+        xmlns:viewModels="clr-namespace:ProjektKatastrophenschutz.ViewModels"
+        xmlns:Properties="clr-namespace:ProjektKatastrophenschutz.Properties"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        ShowIconOnTitleBar="False"
+        mc:Ignorable="d"
+        DataContext="{Binding Source={StaticResource Locator}, Path=Shell}"
+        MinHeight="570" MinWidth="1024" WindowStartupLocation="CenterScreen" WindowState="Maximized" 
+        Title="Emergency Management Tool" ResizeMode="CanResizeWithGrip" TitleCaps="False" NonActiveWindowTitleBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TitleBarBackground}"
+        TitleForeground="White" TitlebarHeight="32" BorderThickness="1" BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarBackground}"
+        UseLayoutRounding="False" Loaded="Shell_OnLoaded" Closed="Shell_OnClosed" Icon="Resources/Images/Icons/Explosion.scale-150.png">
+    <mahAppsMetro:MetroWindow.TitleTemplate>
+        <DataTemplate>
+            <TextBlock Text="{Binding}" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="138 0 0 0"/>
+        </DataTemplate>
+    </mahAppsMetro:MetroWindow.TitleTemplate>
+
+    <Grid x:Name="RootGrid" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="400"/>
+            <ColumnDefinition MinWidth="100" Width="350"/>
+        </Grid.ColumnDefinitions>
+
+        <chromeTabs:ChromeTabControl
+            x:Name="ChromeTabControl"
+            CanMoveTabs="True"
+            DragWindowWithOneTab="True"
+            IsAddButtonVisible="False"
+            ItemsSource="{Binding ShellTabs}"
+            SelectedItem="{Binding SelectedTab}"
+            CloseTabCommand="{Binding CloseTabCommand}"
+            ContainerItemPreparedForOverride="ChromeTabControl_ContainerItemPreparedForOverride"
+            TabDraggedOutsideBonds="ChromeTabControl_TabDraggedOutsideBonds">
+            <chromeTabs:ChromeTabControl.Resources>
+                <DataTemplate DataType="{x:Type viewModels:ShellTabViewModel}">
+                    <elements:ShellViewPresenter View="{Binding View}"/>
+                </DataTemplate>
+            </chromeTabs:ChromeTabControl.Resources>
+            <chromeTabs:ChromeTabControl.ItemTemplate>
+                <DataTemplate DataType="viewModels:ShellTabViewModel">
+                    <StackPanel Orientation="Horizontal">
+                        <!--<controls:ScaleImage Source="{Binding Icon}" Width="16" Height="16" VerticalAlignment="Center"/>-->
+                        <TextBlock Margin="12 0" Text="{Binding Title}" FontSize="14" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </chromeTabs:ChromeTabControl.ItemTemplate>
+        </chromeTabs:ChromeTabControl>
+
+        <Border x:Name="SidebarBorder" Grid.Column="1" Margin="0 32 0 0" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.RightBarBackgroundColor}" BorderBrush="#CCCCCC" BorderThickness="1 0 0 0" UseLayoutRounding="False">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <StackPanel Margin="0 20 0 0">
+                    <TextBlock Text="{Binding CurrentTime, FallbackValue=Uhrzeit}" FontSize="24" HorizontalAlignment="Center"/>
+                    <TextBlock Text="{Binding CurrentDate, FallbackValue='Sonntag, 01. Mai 2016'}" Margin="0 4 0 0" HorizontalAlignment="Center"/>
+
+                    <Grid Margin="12 48 12 8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock Text="VERLAUF" FontSize="16" FontWeight="SemiBold"/>
+                        <!--<TextBlock Grid.Column="1" Cursor="Hand" Text="Anzeige anpassen" Foreground="#00B294" VerticalAlignment="Bottom"/>-->
+                    </Grid>
+                    
+                    <Rectangle Fill="#CCCCCC" Height="1" UseLayoutRounding="False"/>
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" PanningMode="VerticalOnly">
+                    <ItemsControl ItemsSource="{Binding HistoryItems, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="12 12 12 0">
+                                    <TextBlock Text="{Binding HistoryItem.Changes, Mode=OneWay}"/>
+                                    <TextBlock Foreground="#616161">
+                                        <Run Text="{Binding HistoryItem.Timestamp.TimeOfDay, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}"/>
+                                        <Run Text=" von "/>
+                                        <Run Text="{Binding HistoryItem.User, Mode=OneWay}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="5" Background="Transparent"/>
+
+        <views:StartupView Grid.Column="0" Grid.ColumnSpan="2"/>
+    </Grid>
+</mahAppsMetro:MetroWindow>
+
+
+

@@ -1,0 +1,515 @@
+﻿<UserControl x:Class="ProjektKatastrophenschutz.Views.Settings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Properties="clr-namespace:ProjektKatastrophenschutz.Properties"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjektKatastrophenschutz.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             d:DesignHeight="500"
+             d:DesignWidth="800"
+             Background="White"
+             DataContext="{Binding Source={StaticResource Locator},
+                                   Path=Settings}"
+             Loaded="Settings_OnLoaded"
+             mc:Ignorable="d">
+
+    <!--<xctk:ColorPicker
+                        x:Name="ColorPicker"
+                        SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=ColorScheme, Converter={StaticResource ColorToSolidColorBrushValueConverter}}">
+    </xctk:ColorPicker>-->
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  PanningMode="VerticalFirst"
+                  VerticalScrollBarVisibility="Auto">
+        <Grid Background="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MaxWidth="1024" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Margin="20">
+                <TextBlock Margin="6 0 0 0"
+                           FontSize="20"
+                           Text="Einstellungen" />
+
+                <Expander Header="Programm-Kommunikation" Margin="0,5,-0.333,0" 
+                          Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}"
+                          IsExpanded="True" Height="271" >
+
+                    <StackPanel>
+                        <Grid Margin="0 20 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Benutzername" />
+                            <TextBox Grid.Column="1" Text="{Binding UserName}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="IP-Adresse" />
+                            <TextBox Grid.Column="1" Text="{Binding IP}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Rolle" />
+                            <TextBox Grid.Column="1" Text="{Binding Role}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Url" />
+                            <TextBox Grid.Column="1" Text="{Binding Url}" />
+                        </Grid>
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="128" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Margin="152,0,411.667,1"
+                            Content= "Server werden mit IP Adresse:"
+                            Command="{Binding StartAsServerCommand}" Grid.ColumnSpan="2">
+                            </Button>
+                            <ComboBox Width="350" IsEditable="True" Text="{Binding IpAddress}" HorizontalAlignment="Left" ItemsSource="{Binding Addresses}" Margin="152,32,0,-32" Grid.ColumnSpan="2"/>
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Allgemeine Einstellungen (z.B. Sichtbarkeit von Filtern)" Margin="0 10 0 0" 
+                          Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel>
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="400" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Sichtbarkeit von Filtern (Auftragsübersicht)" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Source={x:Static Properties:Settings.Default}, Path=ShowJobsViewFilters}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="400" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Sichtbarkeit von Filtern (Einheitenübersicht)" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Source={x:Static Properties:Settings.Default}, Path=ShowForcesViewFilters}"/>
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="400" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Bestägigungs-Dialoge anzeigen ('Auftrag erfolgreich gespeichert, etc.')" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Source={x:Static Properties:Settings.Default}, Path=ShowSaveSuccessMessageBoxes}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="400" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Nach Einheitenzuweisung -> Auftrag automatisch 'In Bearbeitung'" />
+                            <CheckBox Grid.Column="1" IsChecked="{Binding Source={x:Static Properties:Settings.Default}, Path=AutomaticallySetJobInProgressAfterForceAssignment}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <StackPanel Margin="0 50 0 0" Orientation="Horizontal">
+                    <TextBlock Margin="0 0 0 0"
+                           FontSize="20"
+                           Text="Farbschema-Einstellungen" />
+                    <Button 
+                        x:Name="SetStandardColorsButton"
+                        Margin="20 0 0 0"
+                        FontSize="10"
+                        Foreground="DeepSkyBlue" 
+                        Content="Auf Standard zurücksetzen"
+                        Click="SetStandardColorsButton_OnClick">
+                    </Button>
+                    <Button 
+                        x:Name="LoadThemeButton"     
+                        Command="{Binding LoadThemeCommand}"
+                        Margin="20 0 0 0"
+                        Content="Farbschema importieren"
+                        FontSize="10"
+                        Foreground="DeepSkyBlue" />
+                    <Button 
+                        x:Name="SaveThemeButton"
+                        Command="{Binding SaveThemeCommand}"
+                        Margin="20 0 0 0"
+                        Content="Aktuelles Farbschema exportieren"
+                        FontSize="10"
+                        Foreground="DeepSkyBlue" />
+                </StackPanel>
+
+                <Grid Margin="0 20 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250" SharedSizeGroup="Labels" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Auswahl aus vordefinierten Farbschemata:" />
+                    <ComboBox x:Name="ColorThemeComboBox"
+                              Grid.Column="1"
+                              SelectionChanged="ColorThemeComboBox_OnSelectionChanged">
+                        <ComboBoxItem>Deep Sea</ComboBoxItem>
+                        <ComboBoxItem>Summer Breeze</ComboBoxItem>
+                        <ComboBoxItem>Purple Passion</ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+
+                <Label Margin="0 30 0 0"
+                           FontSize="15"
+                           VerticalAlignment="Center"
+                           Content="Detaillierte Einstellungen:" />
+
+                <Expander Header="Titelleiste und Tab-Bar" Margin="0 5 0 0" 
+                          Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel>
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Titelleiste" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TitleBarBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tab-Bar" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tab-Hintergrundfarbe (aktiver tab)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarTabSelectedBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tab-Textfarbe (aktiver tab)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarTabSelectedText, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tab-Hintergrundfarbe (inaktiver tab)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarTabNotSelectedBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tabs-Text (Tab nicht ausgewählt)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarTabNotSelectedText, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tabs-Hintergrundfarbe (Mouseover)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TabBarTabMouseoverBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Button-Leiste (oben)" Margin="0 20 0 0" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel >
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Hintergrundfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.CommandBarBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Button-Hintergrundfarbe beim Klick" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.CommandBarButtonClickedBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Button-Hintergrundfarbe (mouseover)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.CommandBarButtonMouseoverBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Startfenster (Erstes Fenster beim Programmstart)" Margin="0 20 0 0" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel >
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Hintergrundfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.StartupViewBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Hintergrundfarbe (Eingabemaske)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.StartupViewFormBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Seitenleiste links" Margin="0 20 0 0" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel >
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Hintergrundfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.LeftBarBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tab-Hintergrundfarbe (aktiver Tab)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.LeftBarTabItemSelectedBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tab-Hintergrundfarbe (mouseover)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.LeftBarTabItemMouseoverBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Rechte Seitenleiste" Margin="0 20 0 0" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel >
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Hintergrundfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.RightBarBackgroundColor, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Tabellen" Margin="0 20 0 0" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel >
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tabelleneintrag-Hintergrundfarbe (ausgewählte Zeile)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.DataGridItemSelectedBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Tabelleneintrag-Hintergrundfarbe (Zeile mouseover)" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.DataGridItemMouseoverBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Rahmenfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.DataGridBorderBrush, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Anderes" Margin="0 20 0 0" Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground}" 
+                          BorderBrush="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush}">
+                    <StackPanel>
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Zuweisungsdialoge (Aufträge - Einheiten): Pfeilfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.AssignmentArrowsBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Einstellungen-Tab: Expander Hintergrundfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBackground, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+
+                        <Grid Margin="0 12 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="350" SharedSizeGroup="Labels" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Label Margin="0 0 12 0"
+                           VerticalAlignment="Center"
+                           Content="Einstellungen-Tab: Expander Rahmenfarbe" />
+                            <xctk:ColorPicker Grid.Column="1" SelectedColor="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.SettingsTabExpanderBorderBrush, Converter={StaticResource ColorConverter}}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

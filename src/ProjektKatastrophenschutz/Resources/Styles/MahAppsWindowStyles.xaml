@@ -1,0 +1,91 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mahAppsMetroControls="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    xmlns:Properties="clr-namespace:ProjektKatastrophenschutz.Properties"
+                    xmlns:converters="clr-namespace:ProjektKatastrophenschutz.Converters">
+
+    <converters:ColorToSolidColorBrushValueConverter x:Key="ColorConverter"/>
+    <Style x:Key="BaseMdl2WindowButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="8 12" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <mahAppsMetroControls:ContentControlEx x:Name="PART_ContentPresenter"
+                                                   Padding="{TemplateBinding Padding}"
+                                                   HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                   VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   Content="{TemplateBinding Content}"
+                                                   ContentCharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mahAppsMetroControls:ControlsHelper.ContentCharacterCasing)}"
+                                                   ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                                   ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                   ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                                   RecognizesAccessKey="True"
+                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_ContentPresenter" Property="Opacity" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#2A8AD4"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#015C9F"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource IdealForegroundDisabledBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="LightMdl2WindowButtonStyle" BasedOn="{StaticResource BaseMdl2WindowButtonStyle}" TargetType="{x:Type Button}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="MaxHeight" Value="34" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="46" />
+    </Style>
+
+    <Style x:Key="LightMdl2CloseButtonStyle" BasedOn="{StaticResource LightMdl2WindowButtonStyle}" TargetType="{x:Type Button}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#E81123"/>
+                <Setter Property="Foreground" Value="White"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#F1707A"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type mahAppsMetroControls:WindowButtonCommands}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="LightCloseButtonStyle" Value="{StaticResource LightMdl2CloseButtonStyle}" />
+        <Setter Property="LightMaxButtonStyle" Value="{StaticResource LightMdl2WindowButtonStyle}" />
+        <Setter Property="LightMinButtonStyle" Value="{StaticResource LightMdl2WindowButtonStyle}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.TitleBarBackground, Converter={StaticResource ColorConverter}}" />
+
+    <!--<Style TargetType="{x:Type mahAppsMetroControls:MetroWindow}">
+        <Setter Property="Background" Value="#CCCCCC"/>
+        <Setter Property="TitleCaps" Value="False"/>
+        <Setter Property="TitleForeground" Value="Black"/>
+        <Setter Property="WindowTitleBrush" Value="#CCCCCC"/>
+    </Style>-->
+</ResourceDictionary>

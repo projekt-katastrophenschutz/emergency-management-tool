@@ -1,0 +1,133 @@
+﻿<UserControl x:Class="ProjektKatastrophenschutz.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:ProjektKatastrophenschutz.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjektKatastrophenschutz.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="391.2"
+             d:DesignWidth="1024"
+             DataContext="{Binding Source={StaticResource Locator},
+                                   Path=Main}"
+             mc:Ignorable="d">
+
+    <Grid>
+        <TabControl BorderBrush="Transparent"
+                    SelectedIndex="{Binding SelectedTabIndex}"
+                    SelectedItem="{Binding SelectedTabItem, Mode=OneWayToSource}"
+                    Style="{StaticResource Mdl2TabControlStyle}"
+                    TabStripPlacement="Left">
+
+            <!--  Header item: Aufträge  -->
+            <TabItem IsEnabled="False" Style="{StaticResource Mdl2TabItemStyle}">
+                <TabItem.Header>
+                    <Grid Width="260">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:ScaleImage Width="24"
+                                             Height="24"
+                                             Source="/Resources/Images/Icons/Job.png" />
+                        <TextBlock Grid.Column="1"
+                                   Margin="12 0"
+                                   VerticalAlignment="Center"
+                                   FontSize="16"
+                                   Text="Aufträge" />
+                    </Grid>
+                </TabItem.Header>
+            </TabItem>
+
+            <TabItem Style="{StaticResource Mdl2TabItemStyle}">
+                <TabItem.Header>
+                    <TextBlock Width="260"
+                               FontSize="14"
+                               Padding="36 0"
+                               Text="Auftragsübersicht" />
+                </TabItem.Header>
+
+                <local:JobsView />
+            </TabItem>
+
+            <TabItem Style="{StaticResource Mdl2TabItemStyle}">
+                <TabItem.Header>
+                    <TextBlock Width="260"
+                               FontSize="14"
+                               Padding="36 0"
+                               Text="Auftrag anlegen" />
+                </TabItem.Header>
+
+                <local:JobEditorView />
+            </TabItem>
+
+            <!--  Header item: Einheiten  -->
+            <TabItem IsEnabled="False" Style="{StaticResource Mdl2TabItemStyle}">
+                <TabItem.Header>
+                    <Grid Width="260" Margin="0 24 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:ScaleImage Width="24"
+                                             Height="24"
+                                             Source="/Resources/Images/Icons/Group.png" />
+                        <TextBlock Grid.Column="1"
+                                   Margin="12 0"
+                                   VerticalAlignment="Center"
+                                   FontSize="16"
+                                   Text="Einheiten" />
+                    </Grid>
+                </TabItem.Header>
+            </TabItem>
+
+            <TabItem Style="{StaticResource Mdl2TabItemStyle}">
+                <TabItem.Header>
+                    <TextBlock Width="260"
+                               FontSize="14"
+                               Padding="36 0"
+                               Text="Einheitenübersicht" />
+                </TabItem.Header>
+
+                <local:ForcesView />
+            </TabItem>
+
+            <TabItem Style="{StaticResource Mdl2TabItemStyle}">
+                <TabItem.Header>
+                    <TextBlock Width="260"
+                               FontSize="14"
+                               Padding="36 0"
+                               Text="Einheit anlegen" />
+                </TabItem.Header>
+                <local:ForceEditorView />
+            </TabItem>
+
+            <!-- Einstellungen -->
+            <TabItem IsEnabled="False" Style="{StaticResource Mdl2TabItemStyle}"/>
+
+            <TabItem Style="{StaticResource Mdl2TabItemStyle}">
+                <TabItem.Header>
+                    <Grid Width="260" Margin="0 0 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:ScaleImage Width="24"
+                                             Height="24"
+                                             Source="/Resources/Images/Icons/Settings.png" />
+
+                        <TextBlock Grid.Column="1"
+                               Margin="12 0"
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                               Text="Einstellungen" />
+                    </Grid>
+                </TabItem.Header>
+
+                <local:Settings />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

@@ -1,0 +1,264 @@
+﻿<UserControl x:Class="ProjektKatastrophenschutz.Views.JobToForce"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ProjektKatastrophenschutz.Views"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Properties="clr-namespace:ProjektKatastrophenschutz.Properties"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
+             Background="White"
+             Loaded="JobToForces_OnLoaded"
+             mc:Ignorable="d">
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                      PanningMode="VerticalFirst"
+                      VerticalScrollBarVisibility="Auto">
+            <Grid Background="White">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MaxWidth="1024" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="20"
+                            Grid.IsSharedSizeScope="True"
+                            Orientation="Vertical">
+                    <Grid Margin="0 0 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Margin="0 0 0 0"
+                               VerticalAlignment="Center"
+                               Content="Einsatzaufträge zuweisen:"
+                               FontSize="25" />
+                    </Grid>
+
+                    <Label Margin="0 20 0 0"
+                           HorizontalAlignment="Left"
+                           Content="Name der Einheit:"
+                           FontSize="15" />
+                    <Label HorizontalAlignment="Left"
+                           Content="{Binding SelectedForce.Name}"
+                           FontSize="15" />
+
+                    <Grid Margin="0 20 0 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="47.5*" SharedSizeGroup="Labels" />
+                            <ColumnDefinition Width="5*" />
+                            <ColumnDefinition Width="47.5*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               HorizontalAlignment="Center"
+                               Content="Vorhandene Aufträge:"
+                               FontSize="15" />
+
+                        <Label Grid.Row="0"
+                               Grid.Column="2"
+                               HorizontalAlignment="Center"
+                               Content="Zugewiesene Aufträge:"
+                               FontSize="15" />
+
+                        <DataGrid x:Name="AvailableJobsDataGrid"
+                                  Grid.Row="1"
+                                  Grid.Column="0"
+                                  MinHeight="500"
+                                  MaxHeight="700"
+                                  AutoGenerateColumns="False"
+                                  BorderBrush="{Binding Source={x:Static Properties:Settings.Default},
+                                                        Path=SelectedColorTheme.DataGridBorderBrush}"
+                                  BorderThickness="2"
+                                  IsReadOnly="True"
+                                  ItemsSource="{Binding AvailableJobsView}"
+                                  SelectionMode="Extended">
+
+                            <!--<i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <command:EventToCommand Command="{Binding AvailableJobsSelectionChangedCommand}" CommandParameter="{Binding SelectedItems, ElementName=AvailableJobsDataGrid}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>-->
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.DataGridItemSelectedBackground}" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.DataGridItemMouseoverBackground}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="200"
+                                                    Binding="{Binding Description}"
+                                                    Header="Beschreibung" />
+                                <DataGridTemplateColumn Width="250" Header="Adresse">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Location.Street}" />
+                                                <TextBlock Text=" " />
+                                                <TextBlock Text="{Binding Location.HouseNumber}" />
+                                                <TextBlock Text=" " />
+                                                <TextBlock Text="{Binding Location.ZipCode}" />
+                                                <TextBlock Text=" " />
+                                                <TextBlock Text="{Binding Location.City}" />
+                                                <TextBlock Text=" " />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Grid Grid.Row="1" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="20*" />
+                                <RowDefinition Height="20*" />
+                                <RowDefinition Height="20*" />
+                                <RowDefinition Height="20*" />
+                                <RowDefinition Height="20*" />
+                            </Grid.RowDefinitions>
+
+                            <ContentControl x:Name="AddToTempButton"
+                                            Grid.Row="1"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent"
+                                            MouseUp="AddToTemp">
+                                <Path Width="35"
+                                      Height="35"
+                                      Data="F1M568.254,-7.43524L568.159,-7.34277 567.977,-7.52246 546.559,-28.9417 525.484,-28.9417 549.787,-4.63446 557.439,3.01532 557.619,3.19629 550.067,10.7549 525.758,35.0583 546.834,35.0583 568.254,13.6429 578.792,3.10254 568.254,-7.43524z"
+                                      Fill="{Binding Source={x:Static Properties:Settings.Default},
+                                                     Path=SelectedColorTheme.AssignmentArrowsBackground}"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      Stretch="Uniform" />
+                            </ContentControl>
+
+                            <ContentControl x:Name="DeleteFromTempButton"
+                                            Grid.Row="3"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent"
+                                            MouseUp="DeleteFromTemp">
+                                <Path Width="35"
+                                      Height="35"
+                                      Data="F1M646.688,13.5518L646.783,13.4593 646.965,13.639 668.383,35.0583 689.459,35.0583 665.155,10.751 657.503,3.10126 657.323,2.92023 664.876,-4.63837 689.184,-28.9417 668.109,-28.9417 646.688,-7.52637 636.15,3.01398 646.688,13.5518z"
+                                      Fill="{Binding Source={x:Static Properties:Settings.Default},
+                                                     Path=SelectedColorTheme.AssignmentArrowsBackground}"
+                                      RenderTransformOrigin="0.5,0.5"
+                                      Stretch="Uniform" />
+                            </ContentControl>
+                        </Grid>
+
+                        <DataGrid x:Name="AssignedJobsDataGrid"
+                                  Grid.Row="1"
+                                  Grid.Column="2"
+                                  MinHeight="500"
+                                  MaxHeight="700"
+                                  Margin="5,0,-5,0"
+                                  AutoGenerateColumns="False"
+                                  BorderBrush="{Binding Source={x:Static Properties:Settings.Default},
+                                                        Path=SelectedColorTheme.DataGridBorderBrush}"
+                                  BorderThickness="2"
+                                  IsReadOnly="True"
+                                  ItemsSource="{Binding AssignedJobsView}"
+                                  SelectionMode="Extended">
+
+                            <!--<i:Interaction.Triggers>
+                                <i:EventTrigger EventName="SelectionChanged">
+                                    <command:EventToCommand Command="{Binding AssignedJobsSelectionChangedCommand}" CommandParameter="{Binding SelectedItems, ElementName=AssignedJobsDataGrid}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>-->
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.DataGridItemSelectedBackground}" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.DataGridItemMouseoverBackground}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="200"
+                                                    Binding="{Binding Description}"
+                                                    Header="Beschreibung" />
+                                <DataGridTemplateColumn Width="250" Header="Adresse">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Location.Street}" />
+                                                <TextBlock Text=" " />
+                                                <TextBlock Text="{Binding Location.HouseNumber}" />
+                                                <TextBlock Text=" " />
+                                                <TextBlock Text="{Binding Location.ZipCode}" />
+                                                <TextBlock Text=" " />
+                                                <TextBlock Text="{Binding Location.City}" />
+                                                <TextBlock Text=" " />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+        <!--<StackPanel>
+        <TextBlock x:Name="Heading" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="Aufträge Zuweisung" Height="37" FontSize="22"/>
+        <TextBlock x:Name="Force" HorizontalAlignment="Left" Margin="15,15,0,0" TextWrapping="Wrap" Text="Einsatzkraft:" VerticalAlignment="Top"  FontSize="14"/>
+        <TextBox x:Name="SelectedForce" HorizontalAlignment="Left" Height="23" Margin="95,-22,0,0" TextWrapping="Wrap" Text="{Binding SelectedForce.Name}" VerticalAlignment="Top" Width="440" IsReadOnly="True"/>
+        <DataGrid 
+            x:Name="AllJobs" 
+            ItemsSource="{Binding JobView}" 
+            SelectionMode="Single" 
+            SelectionUnit="FullRow" 
+            SelectedItem="{Binding SelectedJob}"
+        	HorizontalAlignment="Left" 
+            Margin="40,20,0,0" 
+            VerticalAlignment="Top" 
+            MinHeight="239" 
+            MinWidth="200" 
+            BorderThickness="3"
+        	ScrollViewer.CanContentScroll="True" 
+            BorderBrush="Gray" 
+            AutoGenerateColumns="False" 
+            IsReadOnly="True" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Alle Aufträge" Binding="{Binding Description}" MinWidth="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="SelectedJobs" ItemsSource="{Binding TempJobView}"  SelectionMode="Single" SelectionUnit="FullRow" SelectedItem="{Binding SelectedJob}"
+                  HorizontalAlignment="Left" Margin="330,-240,0,0" VerticalAlignment="Top"
+                  MinHeight="239" MinWidth="202" BorderThickness="3" BorderBrush="Gray" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Zugewiesene Aufträge" Binding="{Binding Description}" MinWidth="200"/>
+            </DataGrid.Columns>
+        </DataGrid>
+            
+        <Button x:Name="Add" Content="Hinzufügen" HorizontalAlignment="Left" Margin="40,10,0,0" VerticalAlignment="Top"  Click="AddToTemp"/>
+        <Button x:Name="Delete" Content="Entfernen" HorizontalAlignment="Left" Margin="330,-27,0,0" VerticalAlignment="Top"  Click="DeleteFromTemp"/>
+            
+        <Grid HorizontalAlignment="Right" Height="50" Margin="0,25,10,0" VerticalAlignment="Bottom" Width="200">
+            <Button x:Name="SaveButton" Command="{Binding SaveJobsCommand}" Content="Speichern" FontSize="10"
+        	Background="LightSeaGreen" Foreground="White" VerticalContentAlignment="Center" Width="95" Margin="100,0,0,0"/>
+            <Button x:Name="CancelButton" Command="{Binding CancelJobSelectionCommand}" Content="Abbrechen" FontSize="10"
+        	Background="PaleVioletRed" Foreground="White" VerticalContentAlignment="Center" Width="95" Margin="0,0,100,0" />
+        </Grid>
+        </StackPanel>-->
+    </Grid>
+</UserControl>

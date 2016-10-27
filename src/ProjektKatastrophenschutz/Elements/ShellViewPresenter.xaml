@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="ProjektKatastrophenschutz.Elements.ShellViewPresenter"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:ProjektKatastrophenschutz.Controls"
+             xmlns:elements="clr-namespace:ProjektKatastrophenschutz.Elements"
+             xmlns:Properties="clr-namespace:ProjektKatastrophenschutz.Properties"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <DataTemplate x:Key="ShellCommandBarSeparatorTemplate" DataType="elements:ShellCommandBarSeparator">
+            <Rectangle Width="1" Fill="#D2D2D2" Visibility="{Binding Visibility}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ShellCommandBarButtonTemplate" DataType="elements:ShellCommandBarButton">
+            <Button Command="{Binding Command}" Style="{StaticResource ShellCommandBarButtonStyle}" Width="{Binding Width}" Visibility="{Binding Visibility}">
+                <StackPanel Orientation="Horizontal">
+                    <controls:ScaleImage x:Name="Image" Source="{Binding ImageUri}" Margin="4 0 -2 0" Width="24" Height="24" VerticalAlignment="Center"/>
+                    <TextBlock Margin="12 0" Text="{Binding Label}" FontSize="16" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding ImageUri}" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Image" Value="Collapsed" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ShellCommandBarDropDownButtonTemplate" DataType="elements:ShellCommandBarDropDownButton">
+            <Button Style="{StaticResource ShellCommandBarButtonStyle}" Width="{Binding Width}" Visibility="{Binding Visibility}"
+                    Click="ShellCommandBarDropDownButton_Click" MouseRightButtonUp="ShellCommandBarDropDownButton_MouseRightButtonUp">
+                <Button.ContextMenu>
+                    <ContextMenu ItemsSource="{Binding Items}" HorizontalOffset="{Binding DropDownHorizontalOffset}">
+                        <ContextMenu.Resources>
+                            <Style BasedOn="{StaticResource ShellMenuItemStyle}" TargetType="{x:Type MenuItem}">
+                                <Setter Property="Icon" Value="{Binding ImageUri}"/>
+                                <Setter Property="Command" Value="{Binding Command}" />
+                                <Setter Property="Visibility" Value="{Binding Visibility}"/>
+                            </Style>
+                        </ContextMenu.Resources>
+                        
+                        <ContextMenu.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <controls:ScaleImage Source="{Binding ImageUri}" Margin="4 0" Width="24" Height="24" VerticalAlignment="Center"/>
+                                    <TextBlock Margin="10 0" Text="{Binding Label}" FontSize="16" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ContextMenu.ItemTemplate>
+                    </ContextMenu>
+                </Button.ContextMenu>
+                
+                <StackPanel Orientation="Horizontal">
+                    <controls:ScaleImage x:Name="Image" Source="{Binding ImageUri}" Margin="4 0 -2 0" Width="24" Height="24" VerticalAlignment="Center"/>
+                    <TextBlock Margin="12 0" Text="{Binding Label}" FontSize="16" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding ImageUri}" Value="{x:Null}">
+                    <Setter Property="Visibility" TargetName="Image" Value="Collapsed" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <controls:ShellCommandBarControlSelector
+            x:Key="ShellCommandBarControlSelector"
+            ButtonTemplate="{StaticResource ShellCommandBarButtonTemplate}"
+            DropDownButtonTemplate="{StaticResource ShellCommandBarDropDownButtonTemplate}"
+            SeparatorTemplate="{StaticResource ShellCommandBarSeparatorTemplate}"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Border Background="{Binding Source={x:Static Properties:Settings.Default}, Path=SelectedColorTheme.CommandBarBackground}" BorderBrush="#D2D2D2" BorderThickness="0 0 0 1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ItemsControl x:Name="CommandBarItemsControl" Grid.Column="0" ItemsSource="{Binding Content.DataContext.CommandBarItems, ElementName=ContentControl}" ItemTemplateSelector="{StaticResource ShellCommandBarControlSelector}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+                <ItemsControl Grid.Column="1" ItemsSource="{Binding Content.DataContext.CommandBarSecondaryItems, ElementName=ContentControl}" ItemTemplateSelector="{StaticResource ShellCommandBarControlSelector}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </Border>
+        <ContentControl x:Name="ContentControl" Grid.Row="1"/>
+    </Grid>
+</UserControl>

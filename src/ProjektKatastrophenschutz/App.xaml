@@ -1,0 +1,44 @@
+<Application x:Class="ProjektKatastrophenschutz.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:ProjektKatastrophenschutz.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ProjektKatastrophenschutz.ViewModels"
+             StartupUri="Shell.xaml"
+             mc:Ignorable="d">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!--  MahApps Metro styles  -->
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+
+                <!--  App specific stles  -->
+                <ResourceDictionary Source="/Resources/Styles/ButtonStyles.xaml" />
+                <ResourceDictionary Source="/Resources/Styles/ChromeTabControlStyles.xaml" />
+                <ResourceDictionary Source="/Resources/Styles/MahAppsWindowStyles.xaml" />
+                <ResourceDictionary Source="/Resources/Styles/MenuStyles.xaml" />
+                <ResourceDictionary Source="/Resources/Styles/TabControlStyles.xaml" />
+
+                <!--  ScrollViewer style  -->
+                <!--<ResourceDictionary Source="Resources/ScrollViewer.xaml"/>-->
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--  MVVM Light ViewModel Locator  -->
+            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+
+            <!--  Converters  -->
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+            <converters:ColorToSolidColorBrushValueConverter x:Key="ColorConverter" />
+            <converters:DimensionConverter x:Key="DimensionConverter" />
+            <converters:EmptyStringToNullConverter x:Key="EmptyStringToNullConverter" />
+            <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter"/>
+            <converters:ForceToNumJobsAssignedConverter x:Key="ForceToNumJobsAssignedConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
